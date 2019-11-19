@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.EnvDao">
+	<resultMap id="BaseResultMap" type="cn.com.devops.entity.Env">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="envName" property="envName" jdbcType="VARCHAR" />
+		<result column="appIp" property="appIp" jdbcType="VARCHAR" />
+		<result column="webIp" property="webIp" jdbcType="VARCHAR" />
+		<result column="appPort" property="appPort" jdbcType="VARCHAR" />
+		<result column="webPort" property="webPort" jdbcType="VARCHAR" />
+		<result column="envMark" property="envMark" jdbcType="CHAR" />
+		<result column="status" property="status" jdbcType="CHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+		<result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, envName, appIp, webIp, appPort, webPort, envMark, status, remark,
+		saveDate, saveTime
+	</sql>
+	<select id="queryById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from envinfo
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="query" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Env">
+		select
+		<include refid="Base_Column_List" />
+		from envinfo
+		<trim prefix="where" prefixOverrides="and">
+	   	  <if test="envMark != null and envMark != ''" >
+	        envMark = #{envMark,jdbcType=VARCHAR}
+	      </if>
+	        and status = "1" order by envMark
+   		</trim>
+	</select>
+	<select id="queryByInfo" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Env">
+		select
+		<include refid="Base_Column_List" />
+		from envinfo where
+			appIp = #{appIp,jdbcType=VARCHAR}
+			and webIp = #{webIp,jdbcType=VARCHAR}
+			and appPort = #{appPort,jdbcType=VARCHAR}
+			and webPort = #{webPort,jdbcType=VARCHAR}
+			and envMark = #{envMark,jdbcType=CHAR}
+	        and status = "1"
+	</select>
+	<select id="queryByUrl" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Env">
+		select
+		<include refid="Base_Column_List" />
+		from envinfo
+		where appIp = #{appIp,jdbcType=VARCHAR} and appPort = #{appPort,jdbcType=VARCHAR}
+	</select>
+	<select id="search" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Env">
+		select
+		<include refid="Base_Column_List" />
+		from envinfo
+		<where>
+			<trim prefix="where" prefixOverrides="and">
+				<if test="envName != null">
+					envName = #{envName,jdbcType=VARCHAR}
+				</if>
+				<if test="appIp != null">
+					and appIp = #{appIp,jdbcType=VARCHAR}
+				</if>
+				<if test="webIp != null">
+					and webIp = #{webIp,jdbcType=VARCHAR}
+				</if>
+				<if test="appPort != null">
+					and appPort = #{appPort,jdbcType=VARCHAR}
+				</if>
+				<if test="webPort != null">
+					and webPort = #{webPort,jdbcType=VARCHAR}
+				</if>
+				<if test="envMark != null">
+					and envMark = #{envMark,jdbcType=CHAR}
+				</if>
+			</trim>
+		</where>
+	</select>
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from envinfo
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.com.devops.entity.Env">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into envinfo (envName, appIp, webIp,
+		appPort, webPort, envMark,
+		status, remark, saveDate,
+		saveTime)
+		values (#{envName,jdbcType=VARCHAR}, #{appIp,jdbcType=VARCHAR},
+		#{webIp,jdbcType=VARCHAR},
+		#{appPort,jdbcType=VARCHAR}, #{webPort,jdbcType=VARCHAR}, #{envMark,jdbcType=CHAR},
+		#{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR},
+		#{saveDate,jdbcType=VARCHAR},
+		#{saveTime,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.com.devops.entity.Env">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into envinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="envName != null">
+				envName,
+			</if>
+			<if test="appIp != null">
+				appIp,
+			</if>
+			<if test="webIp != null">
+				webIp,
+			</if>
+			<if test="appPort != null">
+				appPort,
+			</if>
+			<if test="webPort != null">
+				webPort,
+			</if>
+			<if test="envMark != null">
+				envMark,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="saveDate != null">
+				saveDate,
+			</if>
+			<if test="saveTime != null">
+				saveTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="envName != null">
+				#{envName,jdbcType=VARCHAR},
+			</if>
+			<if test="appIp != null">
+				#{appIp,jdbcType=VARCHAR},
+			</if>
+			<if test="webIp != null">
+				#{webIp,jdbcType=VARCHAR},
+			</if>
+			<if test="appPort != null">
+				#{appPort,jdbcType=VARCHAR},
+			</if>
+			<if test="webPort != null">
+				#{webPort,jdbcType=VARCHAR},
+			</if>
+			<if test="envMark != null">
+				#{envMark,jdbcType=CHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=CHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="saveDate != null">
+				#{saveDate,jdbcType=VARCHAR},
+			</if>
+			<if test="saveTime != null">
+				#{saveTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="update" parameterType="cn.com.devops.entity.Env">
+		update envinfo
+		<set>
+			<if test="envName != null">
+				envName = #{envName,jdbcType=VARCHAR},
+			</if>
+			<!-- <if test="appIp != null">
+				appIp = #{appIp,jdbcType=VARCHAR},
+			</if>
+			<if test="webIp != null">
+				webIp = #{webIp,jdbcType=VARCHAR},
+			</if>
+			<if test="appPort != null">
+				appPort = #{appPort,jdbcType=VARCHAR},
+			</if>
+			<if test="webPort != null">
+				webPort = #{webPort,jdbcType=VARCHAR},
+			</if>
+			<if test="envMark != null">
+				envMark = #{envMark,jdbcType=CHAR},
+			</if> -->
+			<if test="status != null">
+				status = #{status,jdbcType=CHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="saveDate != null">
+				saveDate = #{saveDate,jdbcType=VARCHAR},
+			</if>
+			<if test="saveTime != null">
+				saveTime = #{saveTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.Env">
+		update envinfo
+		set envName = #{envName,jdbcType=VARCHAR},
+		appIp = #{appIp,jdbcType=VARCHAR},
+		webIp = #{webIp,jdbcType=VARCHAR},
+		appPort = #{appPort,jdbcType=VARCHAR},
+		webPort = #{webPort,jdbcType=VARCHAR},
+		envMark = #{envMark,jdbcType=CHAR},
+		status = #{status,jdbcType=CHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		saveDate = #{saveDate,jdbcType=VARCHAR},
+		saveTime = #{saveTime,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

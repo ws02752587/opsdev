@@ -1,0 +1,97 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+<div class="layui-form-item">
+    <label class="layui-form-label">环境类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		 <input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+		{{# if(!d.params.updateFlag){ }}
+			<input type="radio" name="envMark" lay-filter="env-info-raido" value="0" title="手机银行" checked>
+            <input type="radio" name="envMark" lay-filter="env-info-raido" value="1" title="整合服务">
+		{{# }else{ }}
+			<input type="radio" name="envMark" value="0" title="手机银行" disabled {{ d.params.envMark === '0' ? 'checked' : '' }}>
+            <input type="radio" name="envMark" value="1" title="整合服务" disabled {{ d.params.envMark === '1' ? 'checked' : '' }}>
+		{{# } }}
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">环境名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="envName" value="{{ d.params.envName || '' }}" lay-verify="required" placeholder="请输入环境名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">应用IP</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="appIp" value="{{ d.params.appIp || '' }}" {{d.params.updateFlag?'disabled':''}} lay-verify="required" placeholder="请输入应用IP地址" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <script type="text/html" template>
+	{{# if(d.params.envMark === '0'){ }}
+  <div class="layui-form-item" id="webipid">
+    <label class="layui-form-label">静态IP</label>
+    <div class="layui-input-inline">
+        <input type="text" name="webIp" id="inputip" value="{{ d.params.webIp || '' }}" {{d.params.updateFlag?'disabled':''}} lay-verify="{{ !d.params.updateFlag?'required':''}}" placeholder="请输入静态IP地址" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+	{{# } }}
+  </script>
+  <div class="layui-form-item">
+    <label class="layui-form-label">应用端口</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="appPort" value="{{ d.params.appPort || '' }}" {{d.params.updateFlag?'disabled':''}} lay-verify="required" placeholder="请输入应用端口" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <script type="text/html" template>
+{{# if(d.params.envMark === '0'){ }}
+  <div class="layui-form-item" id="webportid">
+    <label class="layui-form-label">静态端口</label>
+    <div class="layui-input-inline">
+        <input type="text" name="webPort" id="inputport" value="{{ d.params.webPort || '' }}" {{d.params.updateFlag?'disabled':''}} lay-verify="{{ !d.params.updateFlag?'required':''}}" placeholder="请输入静态端口" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+{{# } }}
+</script>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+<script>
+  layui.use(['admin','form'], function(){
+    var $ = layui.$
+    var form = layui.form;
+    var showweb=function(value){
+    	if(value === "0"){
+        	$("#webipid").show();
+        	$("#webportid").show();
+        	$('#inputip').attr("lay-verify",'required')
+        	$('#inputport').attr("lay-verify",'required')
+        }else{
+        	$("#webipid").hide();
+        	$("#webportid").hide();
+        	$('#inputip').val('');
+        	$('#inputport').val('')
+        	$('#inputip').attr("lay-verify",'')
+        	$('#inputport').attr("lay-verify",'')
+        }
+    }
+    showweb("0")
+    form.on('radio(env-info-raido)', function(data){
+        var value = data.value;
+        showweb(value);
+		        
+      });
+    
+  });
+  </script>

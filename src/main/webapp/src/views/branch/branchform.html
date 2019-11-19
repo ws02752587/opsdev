@@ -1,0 +1,573 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+<div class="layui-form-item" lay-filter="beonlineflag">
+    <label class="layui-form-label">上线类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# if(!d.params.updateFlag){ }}
+			<input type="radio" name="status" value="0" title="已上线" disabled>
+			<input type="radio" name="status" value="1" title="即将上线" checked>
+		{{# }else{ }}
+			<input type="radio" name="status" value="0" {{d.params.status ==='0'?'disabled':''}} title="已上线" {{ d.params.status === '0' ? 'checked' : '' }}>
+			<input type="radio" name="status" value="1" {{d.params.status ==='0'?'disabled':''}} title="即将上线" {{ d.params.status === '1' ? 'checked' : '' }}>
+		{{# } }}
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">手机版本</label>
+    <div class="layui-input-block">
+      <script type="text/html" template lay-done="layui.data.sendParams(d.params)">
+		{{# var info = "";
+			if(d.params.editionInfo != null){
+				info = d.params.editionInfo.split("|")[0];
+			}
+		}}
+		<input type="radio" name="editionInfo" value="0" title="标准版" {{!d.params.updateFlag?'checked':''}} {{info == "0"?"checked":""}} lay-filter="LAY-version-edition-radio" />
+		<input type="radio" name="editionInfo" value="1" title="企业版" lay-filter="LAY-version-edition-radio" {{info == "1"?"checked":""}}/>
+		<input type="radio" name="editionInfo" value="3" title="移动营销" lay-filter="LAY-version-edition-radio" {{info == "3"?"checked":""}}/>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="biaoz">
+    <label class="layui-form-label">附属版本</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# var hf = false, rf = false, kf = false;
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+				if("0" === info && d.params.editionInfo.indexOf('2')>-1){
+					hf = true;
+				}
+				if("0" === info &&  d.params.editionInfo.indexOf('9')>-1){
+					rf = true;
+				}
+				if("0" === info &&  d.params.editionInfo.indexOf('8')>-1){
+					kf = true;
+				}
+			}
+		}}
+		<input type="checkbox" name="fushuInfo2" value="2" title="后管" {{hf?'checked':''}} lay-filter="LAY-version-edition-checkbox" />
+		<input type="checkbox" name="fushuInfo9" value="9" title="RN" {{rf?'checked':''}} lay-filter="LAY-version-edition-checkbox" />
+		<input type="checkbox" name="fushuInfo8" value="8" title="卡版前端" {{kf?'checked':''}} lay-filter="LAY-version-edition-checkbox" />
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="qiye">
+    <label class="layui-form-label">附属版本</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# var hf = false;
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+				if("1" === info && d.params.editionInfo.indexOf('2')>-1){
+					hf = true;
+				}
+			}
+		}}
+		<input type="checkbox" name="fushuInfo2" value="2" title="后管" {{hf?'checked':''}} lay-filter="LAY-version-edition-checkbox" />
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="yinye">
+    <label class="layui-form-label">附属版本</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# var hf = false;
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+				if("3" === info && d.params.editionInfo.indexOf('2')>-1){
+					hf = true;
+				}
+			}
+		}}
+		<input type="checkbox" name="fushuInfo2" value="2" title="后管" {{hf?'checked':''}} lay-filter="LAY-version-edition-checkbox2" />
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="bz">
+    <label class="layui-form-label">标准资料</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# 
+			var beonlineData = "";
+			if(d.params.beonlineData!=null){
+				beonlineData = d.params.beonlineData;
+			}
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+			}
+		}}
+
+		<input type="checkbox" name="beonlineData0" value="0" title="静态图片" {{"0" === info && beonlineData.indexOf("0") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData1" value="1" title="脚本" {{"0" === info && beonlineData.indexOf("1") > -1 ? 'checked':''}} lay-filter="LAY-version-edition-checkbox3">
+		<input type="checkbox" name="beonlineData4" value="4" title="PDF文件" {{"0" === info && beonlineData.indexOf("4") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData5" value="5" title="压缩JS" {{"0" === info && beonlineData.indexOf("5") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData2" value="2" title="配置文件" {{"0" === info && beonlineData.indexOf("2") > -1 || beonlineData.indexOf("3") > -1 ? 'checked':''}}>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="qz">
+    <label class="layui-form-label">企业资料</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# 
+			var beonlineData = "";
+			if(d.params.beonlineData!=null){
+				beonlineData = d.params.beonlineData;
+			}
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+			}
+		}}
+
+		<input type="checkbox" name="beonlineData0" value="0" title="静态图片" {{"1" === info && beonlineData.indexOf("0") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData1" value="1" title="脚本" {{"1" === info && beonlineData.indexOf("1") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData4" value="4" title="PDF文件" {{"1" === info && beonlineData.indexOf("4") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData5" value="5" title="压缩JS" {{"1" === info && beonlineData.indexOf("5") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData2" value="2" title="配置文件" {{"1" === info && beonlineData.indexOf("2") > -1 ? 'checked':''}}>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="yz">
+    <label class="layui-form-label">营销资料</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# 
+			var beonlineData = "";
+			if(d.params.beonlineData!=null){
+				beonlineData = d.params.beonlineData;
+			}
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+			}
+		}}
+
+		<input type="checkbox" name="beonlineData0" value="0" title="静态图片" {{"3" === info && beonlineData.indexOf("0") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData1" value="1" title="脚本" {{"3" === info && beonlineData.indexOf("1") > -1 ? 'checked':''}}>
+		<input type="checkbox" name="beonlineData2" value="2" title="配置文件" {{"3" === info && beonlineData.indexOf("2") > -1 ? 'checked':''}}>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="hz" style="display:none;">
+    <label class="layui-form-label">后管资料</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# 
+			var beonlineData = "";
+			if(d.params.beonlineData!=null){
+				beonlineData = d.params.beonlineData;
+			}
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+			}
+		}}
+		<input type="checkbox" name="houguandata" value="6" title="配置文件" {{"0" === info && beonlineData.indexOf("6") > -1 ? 'checked':''}}>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" id="qiyehz" style="display:none;">
+    <label class="layui-form-label">后管资料</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# 
+			var beonlineData = "";
+			if(d.params.beonlineData!=null){
+				beonlineData = d.params.beonlineData;
+			}
+			if(d.params.editionInfo != null){
+				var info = d.params.editionInfo.split("|")[0];
+			}
+		}}
+		<input type="checkbox" name="beonlineData6" value="6" title="配置文件" {{"1" === info && beonlineData.indexOf("6") > -1 ? 'checked':''}}>
+      </script>
+    </div>
+  </div>
+<div class="layui-form-item">
+    <div class="layui-inline">
+          <label class="layui-form-label">上线日期</label>
+          <div class="layui-input-block">
+           <script type="text/html" template>
+			<input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+			</script>
+			<script type="text/html" template lay-url="/beonlineEdition/query.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+			<select name="beonlineDate">		
+			{{# if(!d.params.updateFlag){ }}
+			{{# for(var i=0;i<d.data.length;i++){}}
+				<option value="{{d.data[i].beonlineDate}}|{{d.data[i].id}}">{{d.data[i].beonlineDate}}
+				{{#
+					if(d.data[i].editionMark === "0"){
+						var bd = d.data[i].beonlineDate;
+						var arrs = bd.split("-");
+						var result = arrs[1];
+						if(result.substr(0,1) === "0"){
+							result = result.substr(1,1);
+						}
+				}}
+					({{result}}月度)
+				{{#}}}
+				</option>
+			{{#}}}
+			{{# }else{ }}
+			{{# 
+				var beflag=false;
+				for(var i=0;i<d.data.length;i++){
+				if(!beflag){
+					beflag = (d.params.beonlineDate == d.data[i].beonlineDate);
+				}
+			}}
+				<option value="{{d.data[i].beonlineDate}}|{{d.data[i].id}}" {{d.params.beonlineDate == d.data[i].beonlineDate?'selected':''}}>{{d.data[i].beonlineDate}}
+				{{#
+					if(d.data[i].editionMark === "0"){
+						var bd = d.data[i].beonlineDate;
+						var arrs = bd.split("-");
+						var result = arrs[1];
+						if(result.substr(0,1) === "0"){
+							result = result.substr(1,1);
+						}
+				}}
+					({{result}}月度)
+				{{#}}}
+				</option>
+			{{#}}}{{#}}}
+			{{#
+				if(!beflag && d.params != null && d.params.beonlineDate != null){
+			}}
+				<option value="{{d.params.beonlineDate}}|" selected>{{d.params.beonlineDate}} (已上线)</option>
+			{{# 
+				}
+			}}
+			</select>
+     		 </script>
+          </div>
+        </div> 
+  </div>
+  <div class="layui-form-item" id="product">
+    <div class="layui-inline">
+          <label class="layui-form-label">生产分支</label>
+          <div class="layui-input-block">
+			<script type="text/html" template lay-url="/branch/queryPro.do" lay-data='{"editionInfo":"0"}' lay-type="get" lay-done="layui.data.driveradd(d);">
+			<select name="proBranchId">	
+			{{# if(d.data != null){ }}
+			{{# if(!d.params.updateFlag){ }}
+				<option value="{{d.data.id}}">{{d.data.branchName}}</option>
+			{{# }else{ }}
+				{{# 
+				var fflag = false;
+				for(var item in d.params.mergeStatus){
+					if(d.params.mergeStatus[item] == "1"){
+						fflag = true;
+						break;
+					}
+				}
+				if(fflag){}}
+					{{# if(d.params.proBranch != null){}}
+					<option value="{{d.params.proBranchId}}" selected>{{d.params.proBranch.branchName}}</option>
+					{{# }else{}}
+					<option value="{{d.params.proBranchId}}" selected>分支被删除</option>
+					{{#}}}
+				{{#}}}
+					<option value="{{d.data.id}}" {{fflag?'':'selected'}}>{{d.data.branchName}}</option>
+			{{# } }}
+			{{# }else{ }}
+				<option value="0">无</option>
+			{{# }}}
+			</select>
+     		 </script>
+          </div>
+        </div> 
+  </div>
+  <div class="layui-form-item" id="productqiye" style="display:none;">
+    <div class="layui-inline">
+          <label class="layui-form-label">生产分支</label>
+          <div class="layui-input-block">
+			<script type="text/html" template lay-url="/branch/queryPro.do" lay-data='{"editionInfo":"1"}' lay-type="get" lay-done="layui.data.driveradd(d);">
+			<select name="proBranchId2">	
+			{{# if(d.data != null){ }}
+			{{# if(!d.params.updateFlag){ }}
+				<option value="{{d.data.id}}">{{d.data.branchName}}</option>
+			{{# }else{ }}
+				{{# 
+				var fflag = false;
+				for(var item in d.params.mergeStatus){
+					if(d.params.mergeStatus[item] == "1"){
+						fflag = true;
+						break;
+					}
+				}
+				if(fflag){}}
+					{{# if(d.params.proBranch != null){}}
+					<option value="{{d.params.proBranchId}}" selected>{{d.params.proBranch.branchName}}</option>
+					{{# }else{}}
+					<option value="{{d.params.proBranchId}}" selected>分支被删除</option>
+					{{#}}}
+				{{#}}}
+					<option value="{{d.data.id}}" {{fflag?'':'selected'}}>{{d.data.branchName}}</option>
+			{{# } }}
+			{{# }else{ }}
+				<option value="0">无</option>
+			{{# }}}
+			</select>
+     		 </script>
+          </div>
+        </div> 
+  </div>
+  <div class="layui-form-item" id="productyin" style="display:none;">
+    <div class="layui-inline">
+          <label class="layui-form-label">生产分支</label>
+          <div class="layui-input-block">
+			<script type="text/html" template lay-url="/branch/queryPro.do" lay-data='{"editionInfo":"2"}' lay-type="get" lay-done="layui.data.driveradd(d);">
+			<select name="proBranchId3">	
+			{{# if(d.data != null){ }}
+			{{# if(!d.params.updateFlag){ }}
+				<option value="{{d.data.id}}">{{d.data.branchName}}</option>
+			{{# }else{ }}
+				{{# 
+				var fflag = false;
+				for(var item in d.params.mergeStatus){
+					if(d.params.mergeStatus[item] == "1"){
+						fflag = true;
+						break;
+					}
+				}
+				if(fflag){}}
+					{{# if(d.params.proBranch != null){}}
+					<option value="{{d.params.proBranchId}}" selected>{{d.params.proBranch.branchName}}</option>
+					{{# }else{}}
+					<option value="{{d.params.proBranchId}}" selected>分支被删除</option>
+					{{#}}}
+				{{#}}}
+					<option value="{{d.data.id}}" {{fflag?'':'selected'}}>{{d.data.branchName}}</option>
+			{{# } }}
+			{{# }else{ }}
+				<option value="0">无</option>
+			{{# }}}
+			</select>
+     		 </script>
+          </div>
+        </div> 
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">工件号</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="branchVersion" style="width:212px;" {{d.params.updateFlag?'disabled':''}} value="{{ d.params.branchVersion || '' }}" lay-verify="required" placeholder="请输入工件号" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">分支名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="branchName" style="width:212px;" value="{{ d.params.branchName || '' }}" lay-verify="required" placeholder="请输入分支名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">svn地址</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="svnAddress" style="width:212px;" value="{{ d.params.svnAddress || '' }}" lay-verify="required" placeholder="请输入svn地址" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  
+  <div class="layui-form-item" lay-filter="hu">
+    <label class="layui-form-label">灰度版本</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# if(!d.params.updateFlag){ }}
+			<input type="checkbox" name="remark" value="1" title="灰度">
+		{{# }else{ }}
+			<input type="checkbox" name="remark" value="1" {{d.params.status ==='0'?'disabled':''}} title="灰度" {{ d.params.remark === '1' ? 'checked' : '' }}>
+		{{# } }}
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">需求编号</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="demandId" style="width:212px;" value="{{ d.params.demandId || '' }}" lay-verify="" placeholder="请输入需求编号" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">需求名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="demandComment" style="width:212px;" value="{{ d.params.demandComment || '' }}" lay-verify="" placeholder="请输入需求名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-inline">
+          <label class="layui-form-label">小组</label>
+          <div class="layui-input-block">
+			<script type="text/html" template lay-url="/group/query.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+			<select name="groupName">	
+			<option value="项目组">全部</option>	
+			{{# if(!d.params.updateFlag){ }}
+			{{# for(var i=0;i<d.data.length;i++){}}
+				<option value="{{d.data[i].groupName}}">{{d.data[i].groupName}}</option>
+			{{#}}}
+			{{# }else{ }}
+			{{# for(var i=0;i<d.data.length;i++){}}
+				<option value="{{d.data[i].groupName}}" {{d.params.groupName == d.data[i].groupName?'selected':''}}>{{d.data[i].groupName}}</option>
+			{{#}}}
+			{{# } }}
+			</select>
+     		 </script>
+          </div>
+        </div> 
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">rel号</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="relnum" style="width:212px;" value="{{ d.params.relnum || '' }}" lay-verify="" placeholder="请输入rel号" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+<script>
+  layui.data.driveradd=function(d){
+	  layui.use('form', function(){
+		  var form = layui.form;
+		  form.render(null, 'layuiadmin-form-svnadmin');
+	  });
+  }
+  // 手机版本 渲染完毕后，回调函数
+  layui.data.sendParams=function(params){
+	  layui.use(['form'], function(){
+		    var $ = layui.$;
+		    var form = layui.form;
+		    if(params.editionInfo != null){
+		    	var info = params.editionInfo.split("|")[0];
+		    }
+		    if(info == null){
+		    	info = "0";
+		    }
+		    var dealeiditon = function(value){
+		    	info = value;
+		    	if("0" === value){
+		    		$("#biaoz").show();
+		    		$("#qiye").hide();
+		    		$("#yinye").hide();
+		    	}else if("1" === value){
+		    		$("#biaoz").hide();
+		    		$("#qiye").show();
+		    		$("#yinye").hide();
+		    	}else if("3" === value){
+		    		$("#biaoz").hide();
+		    		$("#qiye").hide();
+		    		$("#yinye").show();
+		    	}
+		    	
+		    	if("0" === value){
+		    		$("#bz").show();
+		    		$("#qz").hide();
+		    		$("#yz").hide();
+		    		$("#qiyehz").hide();
+		    		$("#hz").show();
+		    	}else if("1" === value){
+		    		$("#bz").hide();
+		    		$("#qz").show();
+		    		$("#yz").hide();
+		    		$("#qiyehz").show();
+		    		$("#hz").hide();
+		    	}else if("3" === value){
+		    		$("#bz").hide();
+		    		$("#qz").hide();
+		    		$("#yz").show();
+		    		$("#hz").hide();
+		    		$("#qiyehz").hide();
+		    	}
+		    	
+		    	if("0" === value){
+		    		$("#product").show();
+		    		$("#productqiye").hide();
+		    		$("#productyin").hide();
+		    	}else if("1" === value){
+		    		$("#product").hide();
+		    		$("#productqiye").show();
+		    		$("#productyin").hide();
+		    	}else if("3" === value){
+		    		$("#product").hide();
+		    		$("#productqiye").hide();
+		    		$("#productyin").show();
+		    	}
+		    	form.render(null, 'layuiadmin-form-svnadmin');
+		    }
+		    dealeiditon(info);
+		    // 手机版本 点击事件
+		    form.on('radio(LAY-version-edition-radio)', function(data){
+		   		var value = data.value;
+		   		dealeiditon(value);
+		  	});
+		    var rnshow = false;
+		    var dealeiditon2 = function(value, flag){
+		    	if("9" === value){
+		    		rnshow = flag;
+		    		if(!jiaobenshow){
+		    			$("#bz input[name='beonlineData1']").trigger('click');
+		    		}
+		    	}
+		    	form.render(null, 'layuiadmin-form-svnadmin');
+		    }
+		    if(params.editionInfo!=null){
+				var editionInfo = params.editionInfo;
+			}
+		    if(editionInfo != null){
+		    	var arrs = editionInfo.split("|");
+		    	for(var i =0;i<arrs.length;i++){
+		    		if("2" === arrs[i]){
+		    			dealeiditon2(arrs[i],true);
+		    		}
+		    	}
+		    }
+		    // 附属版本 点击事件
+		    form.on('checkbox(LAY-version-edition-checkbox)', function(data){
+		   		var value = data.value;
+		   		var flag = data.elem.checked;
+		   		dealeiditon2(value, flag);
+		  	});
+		    // 附属版本 后管 点击事件
+		    form.on('checkbox(LAY-version-edition-checkbox2)', function(data){
+		   		var value = data.value;
+		   		$("#hz").hide();
+		   		$("#qiyehz").hide();
+		   		form.render(null, 'layuiadmin-form-svnadmin');
+		  	});
+		    var jiaobenshow = false;
+		    // 资料 脚本 点击事件
+		    form.on('checkbox(LAY-version-edition-checkbox3)', function(data){
+		   		var value = data.value;
+		   		jiaobenshow = data.elem.checked;
+		   		if(rnshow && !jiaobenshow){
+		   			layer.msg('RN必须有脚本!', {
+		   	          offset: '15px',
+		   	          icon: 2});
+		   			$("#bz input[name='beonlineData1']").trigger('click');
+		   			form.render(null, 'layuiadmin-form-svnadmin');
+		   		}
+		  	});
+	  });
+	  
+  }
+</script>
+
+<script>
+  layui.use(['admin','form'], function(){
+    var $ = layui.$;
+    var form = layui.form;
+    
+  });
+  </script>

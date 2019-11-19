@@ -1,0 +1,35 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">小组名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+		<input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+        <input type="text" name="groupName" value="{{ d.params.groupName || '' }}" lay-verify="required" placeholder="请输入小组名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">组长名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="groupLeader" value="{{ d.params.groupLeader || '' }}" lay-verify="required" placeholder="请输入组长名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['admin', 'form', 'upload'], function(){
+  var $ = layui.$
+  ,form = layui.form
+  ,upload = layui.upload;
+})
+</script>

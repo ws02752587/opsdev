@@ -1,0 +1,80 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">应用命令</label>
+    <script type="text/html" template>
+	<input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+	</script>
+    <div class="layui-input-block">
+    	<input type="radio" name="commandApp" value="0" title="重启服务" lay-filter="LAY-deploy-radio"  checked>
+        <input type="radio" name="commandApp" value="1" title="停止服务" lay-filter="LAY-deploy-radio" >
+        <input type="radio" name="commandApp" value="2" title="杀掉进程" lay-filter="LAY-deploy-radio" >
+    </div>
+  </div>
+  <script type="text/html" template>
+ {{# if(d.params.editionInfo.type != "2"){}}
+  <div class="layui-form-item">
+    <label class="layui-form-label">静态命令</label>
+    <div class="layui-input-block">
+    	<input type="radio" name="commandWeb" value="0" title="重启服务" lay-filter="LAY-deploy-radio2">
+        <input type="radio" name="commandWeb" value="1" title="停止服务" lay-filter="LAY-deploy-radio2">
+		<input type="radio" name="commandWeb" value="2" title="不予处理" lay-filter="LAY-deploy-radio2" checked>
+    </div>
+  </div>
+ {{#}}}
+  </script>
+  <div class="layui-form-item">
+    <label class="layui-form-label">包类型</label>
+    <div class="layui-input-block">
+      <input type="checkbox" name="warType" id="appwar" value="0" title="war包" checked>
+      <script type="text/html" template>
+    {{# if(d.params.editionInfo.type != "2"){}}
+      <input type="checkbox" name="tarType" id="webtar" value="1" title="tar包" checked>
+    {{#}}}
+	</script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+<script>
+  layui.use(['admin','form'], function(){
+    var $ = layui.$
+    var form = layui.form;
+    var commend=function(value){
+    	if(value == "1" || value == "2"){
+			$("#appwar").attr("disabled",true);
+			$("#appwar").attr("checked",false);
+    	}else{
+    		$("#appwar").attr("disabled",false);
+    		$("#appwar").attr("checked","checked");
+    	}
+    	form.render(null, 'layuiadmin-form-svnadmin');
+    }
+    commend("0");
+    var commend2 = function(value){
+    	if(value == "1"){
+			$("#webtar").attr("disabled",true);
+			$("#webtar").attr("checked",false);
+    	}else{
+    		$("#webtar").attr("disabled",false);
+    		$("#webtar").attr("checked","checked");
+    	}
+    	form.render(null, 'layuiadmin-form-svnadmin');
+    }
+    commend2("2");
+    form.on('radio(LAY-deploy-radio)', function(data){
+   		var value = data.value;
+   		commend(value)
+    });
+    form.on('radio(LAY-deploy-radio2)', function(data){
+   		var value = data.value;
+   		commend2(value)
+    });
+  });
+  </script>

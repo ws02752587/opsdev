@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.DBDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.DB" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="port" property="port" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="databaseName" property="databaseName" jdbcType="VARCHAR" />
+    <result column="serverName" property="serverName" jdbcType="VARCHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ip, port, username, databaseName, serverName, alias, status, remark, saveDate, 
+    saveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dbinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbinfo
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.DB" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into dbinfo (ip, port, username, 
+      databaseName, serverName, alias, 
+      status, remark, saveDate, 
+      saveTime)
+    values (#{ip,jdbcType=VARCHAR}, #{port,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{databaseName,jdbcType=VARCHAR}, #{serverName,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, 
+      #{saveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.DB" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into dbinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="port != null" >
+        port,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="databaseName != null" >
+        databaseName,
+      </if>
+      <if test="serverName != null" >
+        serverName,
+      </if>
+      <if test="alias != null" >
+        alias,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null" >
+        #{port,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="databaseName != null" >
+        #{databaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="serverName != null" >
+        #{serverName,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.devops.entity.DB" >
+    update dbinfo
+    <set >
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null" >
+        port = #{port,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="databaseName != null" >
+        databaseName = #{databaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="serverName != null" >
+        serverName = #{serverName,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.DB" >
+    update dbinfo
+    set ip = #{ip,jdbcType=VARCHAR},
+      port = #{port,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      databaseName = #{databaseName,jdbcType=VARCHAR},
+      serverName = #{serverName,jdbcType=VARCHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="delete" parameterType="java.lang.Integer" >
+    update dbinfo
+    set status = '0'
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

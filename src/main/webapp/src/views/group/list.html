@@ -1,0 +1,91 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>小组</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+       <!-- <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button> -->
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+      </div>
+      
+      <table id="LAY-svn-manage" lay-filter="LAY-svn-manage"></table>
+      <script type="text/html" id="tmplsaveDate"> 
+        {{d.saveDate}} {{d.saveTime}}
+      </script> 
+      <script type="text/html" id="table-useradmin-webuser">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use('group', layui.factory('group')).use(['admin', 'useradmin', 'table'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,view = layui.view
+  ,table = layui.table
+  ,form = layui.form
+  ,setter = layui.setter;
+  var successCode = setter.response.statusCode.ok;
+  form.render(null, 'layadmin-userfront-formlist');
+  
+  //监听搜索
+  form.on('submit(LAY-user-front-search)', function(data){
+    var field = data.field;
+    //执行重载
+    table.reload('LAY-svn-manage', {
+      where: field
+    });
+  });
+
+  //事件
+  var active = {
+    add: function(){
+      admin.popup({
+        title: '添加SVN'
+        ,area: ['500px', '450px']
+        ,id: 'LAY-popup-svn-add'
+        ,success: function(layero, index){
+          view(this.id).render('group/groupform').done(function(){
+            form.render(null, 'layuiadmin-form-svnadmin');
+            
+            //监听提交
+            form.on('submit(LAY-svn-front-submit)', function(data){
+              var field = data.field; //获取提交的字段
+              //提交 Ajax 成功后，关闭当前弹层并重载表格
+              admin.req({
+	            url: '/group/insert.do'
+	            ,data: JSON.stringify(field)
+	            ,success: function(res){
+		      		if(res.code == successCode){
+		                layui.table.reload('LAY-svn-manage'); //重载表格
+		                layer.close(index); //执行关闭 
+		      		}else{
+		      			layer.close(index);
+		      		}
+	            }
+	          });
+            });
+          });
+        }
+      });
+    }
+  };
+  
+  $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>

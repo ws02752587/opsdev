@@ -1,0 +1,111 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+<div class="layui-form-item">
+    <label class="layui-form-label">环境类型</label>
+    <div class="layui-input-block">
+    <script type="text/html" template>
+	<input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+	</script>
+      <script type="text/html" template lay-url="/env/query.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+			<select name="envId">	
+				{{#
+					var flag = d.params.updateFlag;
+				}}
+				{{# for(var i=0;i<d.data.length;i++){}}
+					<option value="{{d.data[i].id}}"
+					{{#
+						if(flag && d.data[i].id == d.params.envId){
+					}}
+					selected
+					{{#}}}	
+					>{{d.data[i].webIp}} / {{d.data[i].envName}}</option>
+				{{#}}}
+			</select>
+     </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">整合类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template lay-url="/env/queryEsb.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+			<select name="esbId">	
+				{{#
+					var flag = d.params.updateFlag;
+				}}
+				{{# for(var i=0;i<d.data.length;i++){}}
+					<option value="{{d.data[i].id}}"
+					{{#
+						if(flag && d.data[i].id == d.params.envId){
+					}}
+					selected
+					{{#}}}	
+					>{{d.data[i].envName}} / {{d.data[i].appIp}}:{{d.data[i].appPort}}</option>
+				{{#}}}
+			</select>
+     </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">分支类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template lay-url="/branch/query.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+			<select name="branchId">	
+				{{#
+					var flag = d.params.updateFlag;
+				}}
+				{{# for(var i=0;i<d.data.length;i++){}}
+					<option value="{{d.data[i].id}}"
+					{{#
+						if(flag && d.data[i].id == d.params.branchId){
+					}}
+					selected
+					{{#}}}	
+					>{{d.data[i].branchName}}</option>
+				{{#}}}
+			</select>
+     </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">版本类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template lay-url="/editionInfo/query.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+			<select name="editionId">	
+				{{#
+					var flag = d.params.updateFlag;
+				}}
+				{{# for(var i=0;i<d.data.length;i++){}}
+					<option value="{{d.data[i].id}}" {{#
+						if(flag && d.data[i].id == d.params.editionId){
+					}}
+					selected
+					{{#}}}
+					>{{d.data[i].editionName}}</option>
+				{{#}}}
+			</select>
+     </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+<script>
+  layui.data.driveradd=function(d){
+	  layui.use('form', function(){
+		  var form = layui.form;
+		  form.render(null, 'layuiadmin-form-svnadmin');
+	  });
+  }
+</script>
+<script>
+  layui.use(['admin','form'], function(){
+    var $ = layui.$
+    var form = layui.form;
+		    
+  });
+  </script>

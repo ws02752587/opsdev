@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.GroupDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.Group" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="groupName" property="groupName" jdbcType="VARCHAR" />
+    <result column="groupLeader" property="groupLeader" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, groupName, groupLeader, status, remark, saveDate, saveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from groupinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from groupinfo where status = '1'
+  </select>
+  <select id="queryByName" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Group" >
+    select 
+    <include refid="Base_Column_List" />
+    from groupinfo where groupName = #{groupName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from groupinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.Group" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into groupinfo (groupName, groupLeader, status, 
+      remark, saveDate, saveTime
+      )
+    values (#{groupName,jdbcType=VARCHAR}, #{groupLeader,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, #{saveTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.Group" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into groupinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupName != null" >
+        groupName,
+      </if>
+      <if test="groupLeader != null" >
+        groupLeader,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupLeader != null" >
+        #{groupLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.com.devops.entity.Group" >
+    update groupinfo
+    <set >
+      <if test="groupName != null and groupName!=''" >
+        groupName = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupLeader != null and groupLeader!=''" >
+        groupLeader = #{groupLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.Group" >
+    update groupinfo
+    set groupName = #{groupName,jdbcType=VARCHAR},
+      groupLeader = #{groupLeader,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="delete" parameterType="java.lang.Integer" >
+    update groupinfo set status = '0' where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

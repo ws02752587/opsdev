@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.EditionInfoDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.EditionInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="editionName" property="editionName" jdbcType="VARCHAR" />
+    <result column="appName" property="appName" jdbcType="VARCHAR" />
+    <result column="webName" property="webName" jdbcType="VARCHAR" />
+    <result column="processName" property="processName" jdbcType="VARCHAR" />
+    <result column="dataSource" property="dataSource" jdbcType="VARCHAR" />
+    <result column="logAddress" property="logAddress" jdbcType="VARCHAR" />
+    <result column="logName" property="logName" jdbcType="VARCHAR" />
+    <result column="appCheckUrl" property="appCheckUrl" jdbcType="VARCHAR" />
+    <result column="webCheckUrl" property="webCheckUrl" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, editionName, appName, webName, processName, dataSource, logAddress, logName, 
+    appCheckUrl, webCheckUrl, type, status, remark, saveDate, saveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from editioninfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from editioninfo 
+    <trim prefix="where" prefixOverrides="and">
+   	  <if test="type != null and type != ''" >
+        type = #{type,jdbcType=VARCHAR}
+      </if>
+        and status = "1"
+   	</trim>
+  </select>
+  <select id="queryByType" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.EditionInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from editioninfo where type = #{type,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from editioninfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.EditionInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into editioninfo (editionName, appName, webName, 
+      processName, dataSource, logAddress, 
+      logName, appCheckUrl, webCheckUrl, 
+      type, status, remark, saveDate, 
+      saveTime)
+    values (#{editionName,jdbcType=VARCHAR}, #{appName,jdbcType=VARCHAR}, #{webName,jdbcType=VARCHAR}, 
+      #{processName,jdbcType=VARCHAR}, #{dataSource,jdbcType=VARCHAR}, #{logAddress,jdbcType=VARCHAR}, 
+      #{logName,jdbcType=VARCHAR}, #{appCheckUrl,jdbcType=VARCHAR}, #{webCheckUrl,jdbcType=VARCHAR}, 
+      #{type,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, 
+      #{saveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.EditionInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into editioninfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="editionName != null" >
+        editionName,
+      </if>
+      <if test="appName != null" >
+        appName,
+      </if>
+      <if test="webName != null" >
+        webName,
+      </if>
+      <if test="processName != null" >
+        processName,
+      </if>
+      <if test="dataSource != null" >
+        dataSource,
+      </if>
+      <if test="logAddress != null" >
+        logAddress,
+      </if>
+      <if test="logName != null" >
+        logName,
+      </if>
+      <if test="appCheckUrl != null" >
+        appCheckUrl,
+      </if>
+      <if test="webCheckUrl != null" >
+        webCheckUrl,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="editionName != null" >
+        #{editionName,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null" >
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="processName != null" >
+        #{processName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSource != null" >
+        #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="logAddress != null" >
+        #{logAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="logName != null" >
+        #{logName,jdbcType=VARCHAR},
+      </if>
+      <if test="appCheckUrl != null" >
+        #{appCheckUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webCheckUrl != null" >
+        #{webCheckUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.com.devops.entity.EditionInfo" >
+    update editioninfo
+    <set >
+      <if test="editionName != null and editionName!=''" >
+        editionName = #{editionName,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null" >
+        appName = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        webName = #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="processName != null" >
+        processName = #{processName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSource != null" >
+        dataSource = #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="logAddress != null" >
+        logAddress = #{logAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="logName != null" >
+        logName = #{logName,jdbcType=VARCHAR},
+      </if>
+      <if test="appCheckUrl != null" >
+        appCheckUrl = #{appCheckUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="webCheckUrl != null" >
+        webCheckUrl = #{webCheckUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.EditionInfo" >
+    update editioninfo
+    set editionName = #{editionName,jdbcType=VARCHAR},
+      appName = #{appName,jdbcType=VARCHAR},
+      webName = #{webName,jdbcType=VARCHAR},
+      processName = #{processName,jdbcType=VARCHAR},
+      dataSource = #{dataSource,jdbcType=VARCHAR},
+      logAddress = #{logAddress,jdbcType=VARCHAR},
+      logName = #{logName,jdbcType=VARCHAR},
+      appCheckUrl = #{appCheckUrl,jdbcType=VARCHAR},
+      webCheckUrl = #{webCheckUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

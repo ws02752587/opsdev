@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.ServerEditionDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.ServerEdition" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="editionId" property="editionId" jdbcType="INTEGER" />
+    <result column="appVersion" property="appVersion" jdbcType="CHAR" />
+    <result column="webVersion" property="webVersion" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, editionId, appVersion, webVersion, status, remark, saveDate, saveTime
+  </sql>
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from serveredition
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.ServerEdition">
+    select 
+    <include refid="Base_Column_List" />
+    from serveredition
+    <trim prefix="where" prefixOverrides="and">
+   	  <if test="editionId != null and editionId != ''" >
+        editionId = #{editionId,jdbcType=INTEGER}
+      </if>
+        and status = "1"
+   	</trim>
+   	order by editionId
+  </select>
+  <select id="queryByIdVersion" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.ServerEdition">
+    select 
+    <include refid="Base_Column_List" />
+    from serveredition where webVersion = #{webVersion,jdbcType=CHAR} and editionId = #{editionId,jdbcType=INTEGER} and status = "1"
+  </select>
+  <select id="search" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.ServerEdition">
+    select 
+    <include refid="Base_Column_List" />
+    from serveredition
+    <where>
+      <trim prefix="where" prefixOverrides="and">
+        <if test="appVersion != null" >
+         appVersion = #{appVersion,jdbcType=CHAR}
+        </if>
+      	<if test="webVersion != null" >
+         and webVersion = #{webVersion,jdbcType=CHAR}
+        </if>
+      </trim>
+    </where>
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from serveredition
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.ServerEdition" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into serveredition (editionId, appVersion, webVersion, 
+      status, remark, saveDate, 
+      saveTime)
+    values (#{editionId,jdbcType=INTEGER}, #{appVersion,jdbcType=CHAR}, #{webVersion,jdbcType=CHAR}, 
+      #{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, 
+      #{saveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.ServerEdition" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into serveredition
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="editionId != null" >
+        editionId,
+      </if>
+      <if test="appVersion != null" >
+        appVersion,
+      </if>
+      <if test="webVersion != null" >
+        webVersion,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="editionId != null" >
+        #{editionId,jdbcType=INTEGER},
+      </if>
+      <if test="appVersion != null" >
+        #{appVersion,jdbcType=CHAR},
+      </if>
+      <if test="webVersion != null" >
+        #{webVersion,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.com.devops.entity.ServerEdition" >
+    update serveredition
+    <set >
+      <if test="appVersion != null" >
+        appVersion = #{appVersion,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.ServerEdition" >
+    update serveredition
+    set editionId = #{editionId,jdbcType=INTEGER},
+      appVersion = #{appVersion,jdbcType=CHAR},
+      webVersion = #{webVersion,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

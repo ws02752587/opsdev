@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.OperationLogDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.OperationLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="appIp" property="appIp" jdbcType="VARCHAR" />
+    <result column="appPort" property="appPort" jdbcType="VARCHAR" />
+    <result column="newAppIp" property="newAppIp" jdbcType="VARCHAR" />
+    <result column="newAppPort" property="newAppPort" jdbcType="VARCHAR" />
+    <result column="webIp" property="webIp" jdbcType="VARCHAR" />
+    <result column="appName" property="appName" jdbcType="VARCHAR" />
+    <result column="webName" property="webName" jdbcType="VARCHAR" />
+    <result column="appVersion" property="appVersion" jdbcType="CHAR" />
+    <result column="webVersion" property="webVersion" jdbcType="CHAR" />
+    <result column="dataSource" property="dataSource" jdbcType="VARCHAR" />
+    <result column="newDataSource" property="newDataSource" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, name, appIp, appPort, newAppIp, newAppPort, webIp, appName, webName, appVersion, 
+    webVersion, dataSource, newDataSource, remark, saveDate, saveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from operationlog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from operationlog
+  </select>
+  <select id="search" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.OperationLog">
+    select 
+    <include refid="Base_Column_List" />
+    from operationlog
+    <where>
+    	<trim prefix="where" prefixOverrides="and">
+			  <if test="type != null" >
+		        type = #{type,jdbcType=VARCHAR}
+		      </if>
+		      <if test="name != null" >
+		        and name = #{name,jdbcType=VARCHAR}
+		      </if>
+		      <if test="appIp != null" >
+		        and appIp = #{appIp,jdbcType=VARCHAR}
+		      </if>
+		      <if test="appPort != null" >
+		        and appPort = #{appPort,jdbcType=VARCHAR}
+		      </if>
+		      <if test="webIp != null" >
+		        and webIp = #{webIp,jdbcType=VARCHAR},
+		      </if>
+		      <if test="appName != null" >
+		        and appName = #{appName,jdbcType=VARCHAR},
+		      </if>
+		      <if test="webName != null" >
+		       and webName = #{webName,jdbcType=VARCHAR},
+		      </if>
+		      <if test="appVersion != null" >
+		       and appVersion = #{appVersion,jdbcType=CHAR},
+		      </if>
+		      <if test="webVersion != null" >
+		        and webVersion = #{webVersion,jdbcType=CHAR},
+		      </if>
+		      <if test="dataSource != null" >
+		        and dataSource = #{dataSource,jdbcType=VARCHAR},
+		      </if>
+    	</trim>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from operationlog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.OperationLog" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into operationlog (type, name, appIp, 
+      appPort, newAppIp, newAppPort, 
+      webIp, appName, webName, 
+      appVersion, webVersion, dataSource, 
+      newDataSource, remark, saveDate, 
+      saveTime)
+    values (#{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{appIp,jdbcType=VARCHAR}, 
+      #{appPort,jdbcType=VARCHAR}, #{newAppIp,jdbcType=VARCHAR}, #{newAppPort,jdbcType=VARCHAR}, 
+      #{webIp,jdbcType=VARCHAR}, #{appName,jdbcType=VARCHAR}, #{webName,jdbcType=VARCHAR}, 
+      #{appVersion,jdbcType=CHAR}, #{webVersion,jdbcType=CHAR}, #{dataSource,jdbcType=VARCHAR}, 
+      #{newDataSource,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, 
+      #{saveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.OperationLog" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into operationlog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="appIp != null" >
+        appIp,
+      </if>
+      <if test="appPort != null" >
+        appPort,
+      </if>
+      <if test="newAppIp != null" >
+        newAppIp,
+      </if>
+      <if test="newAppPort != null" >
+        newAppPort,
+      </if>
+      <if test="webIp != null" >
+        webIp,
+      </if>
+      <if test="appName != null" >
+        appName,
+      </if>
+      <if test="webName != null" >
+        webName,
+      </if>
+      <if test="appVersion != null" >
+        appVersion,
+      </if>
+      <if test="webVersion != null" >
+        webVersion,
+      </if>
+      <if test="dataSource != null" >
+        dataSource,
+      </if>
+      <if test="newDataSource != null" >
+        newDataSource,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="appIp != null" >
+        #{appIp,jdbcType=VARCHAR},
+      </if>
+      <if test="appPort != null" >
+        #{appPort,jdbcType=VARCHAR},
+      </if>
+      <if test="newAppIp != null" >
+        #{newAppIp,jdbcType=VARCHAR},
+      </if>
+      <if test="newAppPort != null" >
+        #{newAppPort,jdbcType=VARCHAR},
+      </if>
+      <if test="webIp != null" >
+        #{webIp,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null" >
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        #{appVersion,jdbcType=CHAR},
+      </if>
+      <if test="webVersion != null" >
+        #{webVersion,jdbcType=CHAR},
+      </if>
+      <if test="dataSource != null" >
+        #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="newDataSource != null" >
+        #{newDataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.devops.entity.OperationLog" >
+    update operationlog
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="appIp != null" >
+        appIp = #{appIp,jdbcType=VARCHAR},
+      </if>
+      <if test="appPort != null" >
+        appPort = #{appPort,jdbcType=VARCHAR},
+      </if>
+      <if test="newAppIp != null" >
+        newAppIp = #{newAppIp,jdbcType=VARCHAR},
+      </if>
+      <if test="newAppPort != null" >
+        newAppPort = #{newAppPort,jdbcType=VARCHAR},
+      </if>
+      <if test="webIp != null" >
+        webIp = #{webIp,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null" >
+        appName = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="webName != null" >
+        webName = #{webName,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        appVersion = #{appVersion,jdbcType=CHAR},
+      </if>
+      <if test="webVersion != null" >
+        webVersion = #{webVersion,jdbcType=CHAR},
+      </if>
+      <if test="dataSource != null" >
+        dataSource = #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="newDataSource != null" >
+        newDataSource = #{newDataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.OperationLog" >
+    update operationlog
+    set type = #{type,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      appIp = #{appIp,jdbcType=VARCHAR},
+      appPort = #{appPort,jdbcType=VARCHAR},
+      newAppIp = #{newAppIp,jdbcType=VARCHAR},
+      newAppPort = #{newAppPort,jdbcType=VARCHAR},
+      webIp = #{webIp,jdbcType=VARCHAR},
+      appName = #{appName,jdbcType=VARCHAR},
+      webName = #{webName,jdbcType=VARCHAR},
+      appVersion = #{appVersion,jdbcType=CHAR},
+      webVersion = #{webVersion,jdbcType=CHAR},
+      dataSource = #{dataSource,jdbcType=VARCHAR},
+      newDataSource = #{newDataSource,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

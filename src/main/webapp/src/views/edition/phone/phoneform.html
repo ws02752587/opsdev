@@ -1,0 +1,115 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+<div class="layui-form-item" lay-filter="sex">
+    <label class="layui-form-label">版本类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+		<input type="hidden" name="editionName" value="" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+		{{# if(!d.params.updateFlag){ }}
+			<input type="radio" lay-filter="LAY-radio-edition" name="type" value="0" title="标准版" checked>
+            <input type="radio" lay-filter="LAY-radio-edition" name="type" value="1" title="企业版">
+            <input type="radio" lay-filter="LAY-radio-edition" name="type" value="2" title="后管">
+			<input type="radio" lay-filter="LAY-radio-edition" name="type" value="3" title="移动营销">
+		{{# }else{ }}
+			<input type="radio" name="type" value="0" title="标准版" disabled {{ d.params.type === '0' ? 'checked' : '' }}>
+			<input type="radio" name="type" value="1" title="企业版" disabled {{ d.params.type === '1' ? 'checked' : '' }}>
+      		<input type="radio" name="type" value="2" title="后管" disabled {{ d.params.type === '2' ? 'checked' : '' }}>
+			<input type="radio" name="type" value="3" title="移动营销" disabled {{ d.params.type === '3' ? 'checked' : '' }}>
+		{{# } }}
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">应用名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="appName" value="{{ d.params.appName || '' }}" lay-verify="required" placeholder="请输入应用名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <script type="text/html" template>
+	{{# if(d.params.type !== '2' || d.params.type !== '3'){ }}
+  <div class="layui-form-item">
+    <label class="layui-form-label">静态名称</label>
+    <div class="layui-input-inline">
+        <input type="text" name="webName" value="{{ d.params.webName || '' }}" lay-verify="required" placeholder="请输入静态名称" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+	{{# } }}
+	</script>
+  <div class="layui-form-item">
+    <label class="layui-form-label">进程名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="processName" value="{{ d.params.processName || '' }}" lay-verify="required" placeholder="请输入进程名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">数据源</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="dataSource" value="{{ d.params.dataSource || '' }}" lay-verify="required" placeholder="请输入数据源" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">日志地址</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="logAddress" value="{{ d.params.logAddress || '' }}" lay-verify="required" placeholder="请输入日志地址" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">日志名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="logName" value="{{ d.params.logName || '' }}" lay-verify="required" placeholder="请输入日志名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">应用check</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="appCheckUrl" value="{{ d.params.appCheckUrl || '' }}" lay-verify="required" placeholder="请输入应用check地址" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <script type="text/html" template>
+	{{# if(d.params.type !== '2' || d.params.type !== '3'){ }}
+   <div class="layui-form-item">
+    <label class="layui-form-label">静态check</label>
+    <div class="layui-input-inline">
+      
+        <input type="text" name="webCheckUrl" value="{{ d.params.webCheckUrl || '' }}" lay-verify="required" placeholder="请输入静态check地址" autocomplete="off" class="layui-input">
+      
+    </div>
+  </div>
+{{# }}}
+  </script>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(['admin', 'laydate'], function(){
+    var laydate = layui.laydate;
+    var $ = layui.$
+    
+    //常规用法
+    laydate.render({
+      elem: '#test-laydate-normal-cn',
+      calendar: true
+    });
+    
+    
+  });
+  </script>

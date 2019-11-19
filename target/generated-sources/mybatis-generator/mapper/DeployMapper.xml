@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.entity.DeployMapper" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.Deploy" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="editionId" property="editionId" jdbcType="INTEGER" />
+    <result column="branchId" property="branchId" jdbcType="INTEGER" />
+    <result column="envId" property="envId" jdbcType="INTEGER" />
+    <result column="appStatus" property="appStatus" jdbcType="CHAR" />
+    <result column="webStatus" property="webStatus" jdbcType="CHAR" />
+    <result column="errorMsg" property="errorMsg" jdbcType="VARCHAR" />
+    <result column="appVersion" property="appVersion" jdbcType="CHAR" />
+    <result column="webVersion" property="webVersion" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, editionId, branchId, envId, appStatus, webStatus, errorMsg, appVersion, webVersion, 
+    status, remark, saveDate, saveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from deploy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from deploy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.Deploy" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into deploy (editionId, branchId, envId, 
+      appStatus, webStatus, errorMsg, 
+      appVersion, webVersion, status, 
+      remark, saveDate, saveTime
+      )
+    values (#{editionId,jdbcType=INTEGER}, #{branchId,jdbcType=INTEGER}, #{envId,jdbcType=INTEGER}, 
+      #{appStatus,jdbcType=CHAR}, #{webStatus,jdbcType=CHAR}, #{errorMsg,jdbcType=VARCHAR}, 
+      #{appVersion,jdbcType=CHAR}, #{webVersion,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, #{saveTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.Deploy" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into deploy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="editionId != null" >
+        editionId,
+      </if>
+      <if test="branchId != null" >
+        branchId,
+      </if>
+      <if test="envId != null" >
+        envId,
+      </if>
+      <if test="appStatus != null" >
+        appStatus,
+      </if>
+      <if test="webStatus != null" >
+        webStatus,
+      </if>
+      <if test="errorMsg != null" >
+        errorMsg,
+      </if>
+      <if test="appVersion != null" >
+        appVersion,
+      </if>
+      <if test="webVersion != null" >
+        webVersion,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="editionId != null" >
+        #{editionId,jdbcType=INTEGER},
+      </if>
+      <if test="branchId != null" >
+        #{branchId,jdbcType=INTEGER},
+      </if>
+      <if test="envId != null" >
+        #{envId,jdbcType=INTEGER},
+      </if>
+      <if test="appStatus != null" >
+        #{appStatus,jdbcType=CHAR},
+      </if>
+      <if test="webStatus != null" >
+        #{webStatus,jdbcType=CHAR},
+      </if>
+      <if test="errorMsg != null" >
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        #{appVersion,jdbcType=CHAR},
+      </if>
+      <if test="webVersion != null" >
+        #{webVersion,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.devops.entity.Deploy" >
+    update deploy
+    <set >
+      <if test="editionId != null" >
+        editionId = #{editionId,jdbcType=INTEGER},
+      </if>
+      <if test="branchId != null" >
+        branchId = #{branchId,jdbcType=INTEGER},
+      </if>
+      <if test="envId != null" >
+        envId = #{envId,jdbcType=INTEGER},
+      </if>
+      <if test="appStatus != null" >
+        appStatus = #{appStatus,jdbcType=CHAR},
+      </if>
+      <if test="webStatus != null" >
+        webStatus = #{webStatus,jdbcType=CHAR},
+      </if>
+      <if test="errorMsg != null" >
+        errorMsg = #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        appVersion = #{appVersion,jdbcType=CHAR},
+      </if>
+      <if test="webVersion != null" >
+        webVersion = #{webVersion,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.Deploy" >
+    update deploy
+    set editionId = #{editionId,jdbcType=INTEGER},
+      branchId = #{branchId,jdbcType=INTEGER},
+      envId = #{envId,jdbcType=INTEGER},
+      appStatus = #{appStatus,jdbcType=CHAR},
+      webStatus = #{webStatus,jdbcType=CHAR},
+      errorMsg = #{errorMsg,jdbcType=VARCHAR},
+      appVersion = #{appVersion,jdbcType=CHAR},
+      webVersion = #{webVersion,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

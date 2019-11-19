@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.BeonlineEditionDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.BeonlineEdition" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="beonlineDate" property="beonlineDate" jdbcType="VARCHAR" />
+    <result column="editionMark" property="editionMark" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, beonlineDate, editionMark, status, remark, saveDate, saveTime
+  </sql>
+  <select id="query" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    select 
+    <include refid="Base_Column_List" />
+    from beonlineedition
+    <trim prefix="where" prefixOverrides="and">
+   	  <if test="beonlineDate != null and beonlineDate != ''" >
+        beonlineDate = #{beonlineDate,jdbcType=CHAR}
+      </if>
+      <if test="editionMark != null and editionMark != ''" >
+        and editionMark = #{editionMark,jdbcType=CHAR}
+      </if>
+        and status = "1"  and beonlineDate >= DATE_FORMAT(NOW(),'%Y-%m-%d')
+   	</trim>
+   	order by beonlineDate
+  </select>
+  <select id="queryByDate" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    select 
+    <include refid="Base_Column_List" />
+    from beonlineedition where beonlineDate = #{beonlineDate,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from beonlineedition
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into beonlineedition (beonlineDate, editionMark, status, 
+      remark, saveDate, saveTime
+      )
+    values (#{beonlineDate,jdbcType=VARCHAR}, #{editionMark,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{saveDate,jdbcType=VARCHAR}, #{saveTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into beonlineedition
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="beonlineDate != null" >
+        beonlineDate,
+      </if>
+      <if test="editionMark != null" >
+        editionMark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="beonlineDate != null" >
+        #{beonlineDate,jdbcType=VARCHAR},
+      </if>
+      <if test="editionMark != null" >
+        #{editionMark,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    update beonlineedition
+    <set >
+      <if test="beonlineDate != null and beonlineDate!=''" >
+        beonlineDate = #{beonlineDate,jdbcType=VARCHAR},
+      </if>
+      <if test="editionMark != null and editionMark!=''" >
+        editionMark = #{editionMark,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    update beonlineedition
+    set beonlineDate = #{beonlineDate,jdbcType=VARCHAR},
+      editionMark = #{editionMark,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="delete" parameterType="cn.com.devops.entity.BeonlineEdition" >
+    update beonlineedition
+    set status = '0',
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

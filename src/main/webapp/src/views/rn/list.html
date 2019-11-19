@@ -1,0 +1,114 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>版本</cite></a>
+    <a><cite>RN</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+  	<div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">版本类型</label>
+          <div class="layui-input-block">
+            <script type="text/html" template lay-url="/editionInfo/query.do" lay-type="post" lay-done="layui.data.done(d);"> 
+            <select lay-filter="rn-select-list">
+				{{# for(var i = 0;i < d.data.length;i++){}}
+					{{# if(d.data[i].type === '0'){}}
+					<option value="{{d.data[i].type}}">{{d.data[i].editionName}}</option>
+					{{#}}}
+				{{#}}}
+            </select>
+			</script>
+          </div>
+        </div> 
+        <div class="layui-inline">
+          <label class="layui-form-label">版本号</label>
+          <div class="layui-input-block">
+            <select name="version" id="versionid">
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+		    <label class="layui-form-label"></label>
+		    <div class="layui-input-inline">
+		      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+		    </div>
+		  </div>	
+      </div>
+    </div>
+  
+  	
+  </div>
+</div>
+<script>
+  layui.data.done=function(d){
+	  layui.use(['form','admin'], function(){
+		  var setter = layui.setter;
+		  var successCode = setter.response.statusCode.ok;
+		  var form = layui.form;
+		  var admin = layui.admin;
+		  var $ = layui.$;
+		  var queryversion = function(id){
+			  var params = {
+				editionId:id
+			  };
+			  admin.req({
+		        url: '/editionVersion/query.do'
+		        ,data: JSON.stringify(params)
+		        ,success: function(res){
+		  		if(res.code == successCode){
+		  			var data = res.data;
+		  			var options = "<option value=''>全部</option>";
+		  			for(var i =0;i<data.length;i++){
+		  				options += '<option value="'+data[i].version+'">'+data[i].version+'</option>';
+		  			}
+		  			$("#versionid").html(options);
+		  			form.render(null, 'layadmin-userfront-formlist');
+		  		}
+		        }
+		      });
+		  }
+		  queryversion("0")
+		  form.on('select(rn-select-list)', function(data){
+			   	var value = data.value;
+			   	queryversion(value)
+		   });
+		  form.render(null, 'layadmin-userfront-formlist');
+	  });
+  }
+</script>
+<script>
+layui.use('rn', layui.factory('rn')).use(['admin', 'table'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,view = layui.view
+  ,table = layui.table
+  ,form = layui.form
+  ,setter = layui.setter;
+  var successCode = setter.response.statusCode.ok;
+  form.render(null, 'layadmin-userfront-formlist');
+  
+//监听提交
+  form.on('submit(LAY-svn-front-submit)', function(data){
+    var field = data.field; //获取提交的字段
+	
+    //提交 Ajax 成功后，关闭当前弹层并重载表格
+    admin.req({
+        url: '/rn/update.do'
+        ,data: JSON.stringify(field)
+        ,success: function(res){
+  		if(res.code == successCode){
+  			layer.msg(res.msg, {icon: 1});
+  		}
+        }
+      });
+  });
+});
+</script>

@@ -1,0 +1,56 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+<div class="layui-form-item" lay-filter="sex">
+    <label class="layui-form-label">手机版本</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+	<input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+	</script>
+      <script type="text/html" template lay-url="/editionInfo/query.do" lay-type="post" lay-done="layui.data.driveradd(d);">
+		{{# if(!d.params.updateFlag){ }}
+			{{# for(var i=0;i<d.data.length;i++){}}
+				{{# if(d.data[i].type != '2'){}}
+					<input type="radio" name="editionId" value="{{d.data[i].type}}" title="{{d.data[i].editionName}}" {{i==0?'checked':''}}>
+				{{# }}}
+			{{#}}}
+		{{# }else{ }}
+			{{# for(var i=0;i<d.data.length;i++){}}
+				{{# if(d.data[i].type != '2'){}}
+					<input type="radio" name="editionId" value="{{d.data[i].type}}" disabled title="{{d.data[i].editionName}}" {{d.data[i].type===d.params.editionId?'checked':''}}>
+				{{# }}}
+			{{#}}}
+		{{# } }}
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">版本号</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="version" value="{{ d.params.version || '' }}" lay-verify="required" placeholder="请输入版本号" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+<script>
+  layui.data.driveradd=function(d){
+	  layui.use('form', function(){
+		  var form = layui.form;
+		  form.render(null, 'layuiadmin-form-svnadmin');
+	  });
+  }
+</script>
+<script>
+  layui.use(['admin'], function(){
+    var $ = layui.$
+    
+    
+  });
+  </script>

@@ -1,0 +1,61 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-svnadmin" style="padding: 20px 0 0 0;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">svn账号</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+		<input type="hidden" name="id" value="{{ d.params.id || '' }}" lay-verify="" placeholder="" autocomplete="off" class="layui-input">
+        <input type="text" name="svnName" value="{{ d.params.svnName || '' }}" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">svn密码</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="password" name="svnPassword" value="" lay-verify="{{# if(!d.params.updateFlag){}}required{{# }}}" placeholder="请输入密码" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+    <script type="text/html" template>
+		{{# if(d.params.updateFlag){ }}
+			<div class="layui-form-mid layui-word-aux">留空则不修改</div>
+		{{# } }}
+      </script>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">svn地址</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="svnBaseAddress" value="{{ d.params.svnBaseAddress || '' }}" lay-verify="required" placeholder="请输入地址" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item" lay-filter="sex">
+    <label class="layui-form-label">选择类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		{{# if(!d.params.updateFlag){ }}
+			<input type="radio" name="svnType" value="0" title="手机银行" checked>
+		{{# }else{ }}
+			<input type="radio" name="svnType" value="0" title="手机银行" {{ d.params.svnType === '0' ? 'checked' : '' }}>
+		{{# } }}
+        <input type="radio" name="svnType" value="1" title="移动营销" {{ d.params.svnType === '1' ? 'checked' : '' }}>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-svn-front-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['admin', 'form', 'upload'], function(){
+  var $ = layui.$
+  ,form = layui.form
+  ,upload = layui.upload;
+})
+</script>

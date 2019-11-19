@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.SvnDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.Svn" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="svnName" property="svnName" jdbcType="VARCHAR" />
+    <result column="svnPassword" property="svnPassword" jdbcType="VARCHAR" />
+    <result column="svnBaseAddress" property="svnBaseAddress" jdbcType="VARCHAR" />
+    <result column="svnType" property="svnType" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, svnName, svnBaseAddress, svnType, status, remark, saveDate, saveTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from svn
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Svn">
+    select 
+    <include refid="Base_Column_List" />
+    from svn 
+    <trim prefix="where" prefixOverrides="and">
+   	  <if test="svnType != null and svnType != ''" >
+        svnType = #{svnType,jdbcType=CHAR}
+      </if>
+      <if test="1 == 1" >
+        and status = "1"
+      </if>
+   	</trim>
+  </select>
+  <select id="queryByNameAndUrl" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Svn">
+    select 
+    <include refid="Base_Column_List" />
+    from svn 
+    <trim prefix="where" prefixOverrides="and">
+   	  <if test="svnName != null and svnName != ''" >
+        svnName = #{svnName,jdbcType=VARCHAR}
+      </if>
+      <if test="svnBaseAddress != null and svnBaseAddress != ''" >
+        and svnBaseAddress = #{svnBaseAddress,jdbcType=VARCHAR}
+      </if>
+   	</trim>
+  </select>
+  <select id="queryByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />,svnPassword
+    from svn
+    where svnType = #{svnType,jdbcType=CHAR}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from svn
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.Svn" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into svn (svnName, svnPassword, svnBaseAddress, 
+      svnType, status, remark, 
+      saveDate, saveTime)
+    values (#{svnName,jdbcType=VARCHAR}, #{svnPassword,jdbcType=VARCHAR}, #{svnBaseAddress,jdbcType=VARCHAR}, 
+      #{svnType,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{saveDate,jdbcType=VARCHAR}, #{saveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.Svn" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into svn
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="svnName != null" >
+        svnName,
+      </if>
+      <if test="svnPassword != null" >
+        svnPassword,
+      </if>
+      <if test="svnBaseAddress != null" >
+        svnBaseAddress,
+      </if>
+      <if test="svnType != null" >
+        svnType,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="svnName != null" >
+        #{svnName,jdbcType=VARCHAR},
+      </if>
+      <if test="svnPassword != null" >
+        #{svnPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="svnBaseAddress != null" >
+        #{svnBaseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="svnType != null" >
+        #{svnType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.com.devops.entity.Svn" >
+    update svn
+    <set >
+      <if test="svnName != null" >
+        svnName = #{svnName,jdbcType=VARCHAR},
+      </if>
+      <if test="svnPassword != null and svnPassword!=''" >
+        svnPassword = #{svnPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="svnBaseAddress != null" >
+        svnBaseAddress = #{svnBaseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="svnType != null" >
+        svnType = #{svnType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null and remark !=''" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.Svn" >
+    update svn
+    set svnName = #{svnName,jdbcType=VARCHAR},
+      svnPassword = #{svnPassword,jdbcType=VARCHAR},
+      svnBaseAddress = #{svnBaseAddress,jdbcType=VARCHAR},
+      svnType = #{svnType,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR},
+      saveTime = #{saveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

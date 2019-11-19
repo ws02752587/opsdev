@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.devops.dao.BranchDao" >
+  <resultMap id="BaseResultMap" type="cn.com.devops.entity.Branch" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="beonlineDate" property="beonlineDate" jdbcType="VARCHAR" />
+    <result column="beonlineId" property="beonlineId" jdbcType="INTEGER" />
+    <result column="groupName" property="groupName" jdbcType="VARCHAR" />
+    <result column="proBranchId" property="proBranchId" jdbcType="INTEGER" />
+    <result column="branchName" property="branchName" jdbcType="VARCHAR" />
+    <result column="branchVersion" property="branchVersion" jdbcType="VARCHAR" />
+    <result column="svnAddress" property="svnAddress" jdbcType="VARCHAR" />
+    <result column="demandId" property="demandId" jdbcType="VARCHAR" />
+    <result column="demandComment" property="demandComment" jdbcType="VARCHAR" />
+    <result column="proFlag" property="proFlag" jdbcType="CHAR" />
+    <result column="errorMsg" property="errorMsg" jdbcType="VARCHAR" />
+    <result column="relnum" property="relnum" jdbcType="VARCHAR" />
+    <result column="beonlineData" property="beonlineData" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="saveDate" property="saveDate" jdbcType="VARCHAR" />
+    <result column="saveTime" property="saveTime" jdbcType="VARCHAR" />
+    <result column="editionInfo" property="editionInfo" jdbcType="VARCHAR" />
+    <association property="proBranch" javaType="cn.com.devops.entity.Branch">
+    	<result column="pro_branchName" property="branchName" jdbcType="VARCHAR" />
+    </association>
+    <association property="beonlineEdition" javaType="cn.com.devops.entity.BeonlineEdition">
+    	<result column="pro_beonlineDate" property="beonlineDate" jdbcType="VARCHAR" />
+    	<result column="pro_editionMark" property="editionMark" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, beonlineDate,beonlineId, groupName, proBranchId, branchName, branchVersion, svnAddress, 
+    demandId, demandComment, proFlag, errorMsg, status, remark, saveDate, saveTime,editionInfo
+  </sql>
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from branchinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Branch" >
+    select 
+    a.id, a.beonlineDate,a.beonlineId, a.groupName, a.proBranchId, a.branchName, a.branchVersion, a.svnAddress, 
+    a.demandId, a.demandComment, a.errorMsg, a.status, a.remark, a.saveDate, a.saveTime,a.editionInfo,a.relnum,a.beonlineData,
+    b.branchName as pro_branchName,c.editionMark as pro_editionMark,c.beonlineDate as pro_beonlineDate
+    from branchinfo a LEFT OUTER JOIN branchinfo b on a.proBranchId = b.id  LEFT OUTER JOIN beonlineedition c on a.beonlineId = c.id
+     <trim prefix="where" prefixOverrides="and">
+      a.status = #{status,jdbcType=CHAR} 
+      <if test="remark != null and remark != ''">
+       and a.remark = #{remark,jdbcType=VARCHAR}
+      </if>
+   	</trim>
+   	order by a.beonlineDate
+   	<if test="status == 0">
+       desc
+    </if>
+    ,a.editionInfo
+  </select>
+  <select id="queryProBranch" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Branch">
+    select 
+    <include refid="Base_Column_List" />
+    from branchinfo
+    <trim prefix="where" prefixOverrides="and">
+      status = '0' and remark = ''
+      <if test="editionInfo != null and editionInfo!=''" >
+       and substring(editionInfo , 1,1) = #{editionInfo,jdbcType=VARCHAR} 
+    </if>
+   	</trim>
+    order by beonlineDate desc
+  </select>
+  <select id="queryByVersion" resultMap="BaseResultMap" parameterType="cn.com.devops.entity.Branch" >
+    select 
+    <include refid="Base_Column_List" />
+    from branchinfo where status = '1' and branchVersion = #{branchVersion,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from branchinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.com.devops.entity.Branch" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into branchinfo (beonlineDate, groupName, proBranchId, 
+      branchName, branchVersion, svnAddress, 
+      demandId, demandComment, proFlag, 
+      errorMsg, status, remark, 
+      saveDate, saveTime,editionInfo,beonlineId,relnum,beonlineData)
+    values (#{beonlineDate,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{proBranchId,jdbcType=INTEGER}, 
+      #{branchName,jdbcType=VARCHAR}, #{branchVersion,jdbcType=VARCHAR}, #{svnAddress,jdbcType=VARCHAR}, 
+      #{demandId,jdbcType=VARCHAR}, #{demandComment,jdbcType=VARCHAR}, #{proFlag,jdbcType=CHAR}, 
+      #{errorMsg,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{saveDate,jdbcType=VARCHAR}, #{saveTime,jdbcType=VARCHAR}, #{editionInfo,jdbcType=VARCHAR},
+      #{beonlineId,jdbcType=VARCHAR}, #{relnum,jdbcType=VARCHAR}, #{beonlineData,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.devops.entity.Branch" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into branchinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="beonlineDate != null" >
+        beonlineDate,
+      </if>
+      <if test="groupName != null" >
+        groupName,
+      </if>
+      <if test="proBranchId != null" >
+        proBranchId,
+      </if>
+      <if test="branchName != null" >
+        branchName,
+      </if>
+      <if test="branchVersion != null" >
+        branchVersion,
+      </if>
+      <if test="svnAddress != null" >
+        svnAddress,
+      </if>
+      <if test="demandId != null" >
+        demandId,
+      </if>
+      <if test="demandComment != null" >
+        demandComment,
+      </if>
+      <if test="proFlag != null" >
+        proFlag,
+      </if>
+      <if test="errorMsg != null" >
+        errorMsg,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="saveDate != null" >
+        saveDate,
+      </if>
+      <if test="saveTime != null" >
+        saveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="beonlineDate != null" >
+        #{beonlineDate,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="proBranchId != null" >
+        #{proBranchId,jdbcType=INTEGER},
+      </if>
+      <if test="branchName != null" >
+        #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchVersion != null" >
+        #{branchVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="svnAddress != null" >
+        #{svnAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="demandId != null" >
+        #{demandId,jdbcType=VARCHAR},
+      </if>
+      <if test="demandComment != null" >
+        #{demandComment,jdbcType=VARCHAR},
+      </if>
+      <if test="proFlag != null" >
+        #{proFlag,jdbcType=CHAR},
+      </if>
+      <if test="errorMsg != null" >
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        #{saveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="cn.com.devops.entity.Branch" >
+    update branchinfo
+    <set >
+      <if test="branchVersion != null" >
+        branchVersion = #{branchVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="beonlineDate != null" >
+        beonlineDate = #{beonlineDate,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        groupName = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="proBranchId != null" >
+        proBranchId = #{proBranchId,jdbcType=INTEGER},
+      </if>
+      <if test="branchName != null" >
+        branchName = #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="svnAddress != null and svnAddress!=''" >
+        svnAddress = #{svnAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="demandId != null and demandId != ''" >
+        demandId = #{demandId,jdbcType=VARCHAR},
+      </if>
+      <if test="demandComment != null and demandComment != ''" >
+        demandComment = #{demandComment,jdbcType=VARCHAR},
+      </if>
+      <if test="proFlag != null" >
+        proFlag = #{proFlag,jdbcType=CHAR},
+      </if>
+      <if test="errorMsg != null" >
+        errorMsg = #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="saveDate != null" >
+        saveDate = #{saveDate,jdbcType=VARCHAR},
+      </if>
+      <if test="saveTime != null" >
+        saveTime = #{saveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="editionInfo != null" >
+        editionInfo = #{editionInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="beonlineId != null and beonlineId != ''" >
+        beonlineId = #{beonlineId,jdbcType=VARCHAR},
+      </if>
+      <if test="relnum != null and relnum!=''" >
+        relnum = #{relnum,jdbcType=VARCHAR},
+      </if>
+      <if test="beonlineData != null and beonlineData!=''" >
+        beonlineData = #{beonlineData,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.devops.entity.Branch" >
+    update branchinfo
+    set beonlineDate = #{beonlineDate,jdbcType=VARCHAR},
+      groupName = #{groupName,jdbcType=VARCHAR},
+      proBranchId = #{proBranchId,jdbcType=INTEGER},
+      branchName = #{branchName,jdbcType=VARCHAR},
+      branchVersion = #{branchVersion,jdbcType=VARCHAR},
+      svnAddress = #{svnAddress,jdbcType=VARCHAR},
+      demandId = #{demandId,jdbcType=VARCHAR},
+      demandComment = #{demandComment,jdbcType=VARCHAR},
+      proFlag = #{proFlag,jdbcType=CHAR},
+      errorMsg = #{errorMsg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      saveDate = #{saveDate,jdbcType=VARCHAR}
+      editionInfo = #{editionInfo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

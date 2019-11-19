@@ -1,0 +1,279 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>分支</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+  	
+  	<div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">版本类型</label>
+          <div class="layui-input-block">
+            <select name="status" lay-filter="select-beonline-type">
+              <option value="1">即将上线</option>
+              <option value="0">已上线</option>
+            </select>
+          </div>
+        </div> 
+        <div class="layui-inline">
+        <label class="layui-form-label">产品类型</label>
+        	<div class="layui-input-block">
+          <select name="remark">
+          	  <option value="">全部</option>
+              <option value="1">灰度</option>
+            </select>
+            </div>
+          </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" id="submit-button" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  	
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+       <!-- <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button> -->
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+      </div>
+      
+      <table id="LAY-svn-manage" lay-filter="LAY-svn-manage"></table>
+      <script type="text/html" id="tmplsaveDate"> 
+        {{d.saveDate}} {{d.saveTime}}
+      </script> 
+      <script type="text/html" id="tmpltype"> 
+			{{d.branchName}}
+			{{# if(d.remark === '1') {}}
+				<span class="layui-badge layui-bg-gray">灰度</span>
+			{{# }}}
+			{{# var date = new Date();
+				var t_s=date.getTime();
+				date.setTime(t_s+1000*60*60*24*7);
+				var year = date.getFullYear();
+				var month = date.getMonth()+1;
+				var day = date.getDate();
+				var result = year + '/' +month+'/'+day;
+				var stdt = new Date(result);
+				var today = new Date();
+				var beonline = d.beonlineDate+" 23:59:59";
+				beonline = new Date(beonline.replace("-","/"));
+				var dd = today.getDate();
+				if(dd<10){
+					dd = "0"+dd;
+				}
+				if(d.beonlineDate == today.getFullYear()+"-"+(today.getMonth()+1)+"-"+dd){
+			}}
+				<span class="layui-badge">今天上线</span>
+			{{#}else if(beonline > today && beonline < stdt){}}
+				<span class="layui-badge layui-bg-blue">即将上线</span>
+			{{#}else if(today > beonline){}}
+				<span class="layui-badge layui-bg-green">已上线</span>
+			{{#}}}
+			{{# if(d.editionInfo != null && d.editionInfo.indexOf("9")>-1) {}}
+				<span class="layui-badge layui-bg-orange">RN</span>
+			{{# }}}
+			{{# if(d.editionInfo != null && d.editionInfo.indexOf("2")>-1) {}}
+				<span class="layui-badge layui-bg-green">后管</span>
+			{{# }}}
+			{{# if(d.editionInfo != null && d.editionInfo.indexOf("1")>-1) {}}
+				<span class="layui-badge layui-bg-black">企业</span>
+			{{# }}}
+			{{# if(d.editionInfo != null && d.editionInfo.indexOf("3")>-1) {}}
+				<span class="layui-badge layui-bg-black">营销</span>
+			{{# }}}
+      </script>
+      <script type="text/html" id="templbranch"> 
+        {{# if(d.proBranch != null){ }}
+			{{ d.proBranch.branchName }}
+		{{# }else{ }}
+			无
+		{{# } }}
+      </script>
+      <script type="text/html" id="templstatus"> 
+        {{# if(d.mergeStatus != null){ }}
+			{{# 
+				var strs = [];
+				for(var item in d.mergeStatus){
+					if(d.mergeStatus[item] === "1"){
+						if(item === "0"){
+							strs[strs.length] = "标准版";
+						}else if(item == "1"){
+							strs[strs.length] = "企业版";		
+						}else if(item == "2"){
+							strs[strs.length] = "后管";		
+						}else if(item == "3"){
+							strs[strs.length] = "营销";		
+						}else if(item == "9"){
+							strs[strs.length] = "RN";		
+						}
+			}} 
+			{{#}}}{{#}}}
+			{{# if(strs.length > 0){}}
+				<span class="layui-badge">异常</span>
+				{{#for(var i=0;i<strs.length;i++){}}
+				<span class="layui-badge layui-bg-orange">{{strs[i]}}</span>
+			{{#}}}
+			{{#}else{}}
+				<span class="layui-badge layui-bg-green">正常</span>
+			{{#}}}
+		{{# }else{ }}
+			<span class="layui-badge layui-bg-green">正常</span>
+		{{# } }}
+
+      </script>
+      <script type="text/html" id="templdate"> 
+		{{d.beonlineDate}}
+        {{# if(d.beonlineEdition != null && d.beonlineEdition.editionMark === "0"){ }}
+			<span class="layui-badge layui-bg-green">
+			{{#
+				var bd = d.beonlineEdition.beonlineDate;
+				var arrs = bd.split("-");
+				var result = arrs[1];
+				if(result.substr(0,1) === "0"){
+					result = result.substr(1,1);
+				}
+			}}{{result}}月度</span>
+		{{# } }}
+      </script>
+      <script type="text/html" id="templdata"> 
+		{{# if(d.beonlineData != null && d.beonlineData.indexOf("1")>-1) {}}
+			<span class="layui-badge layui-bg-orange">脚本</span>
+		{{# }}}
+		{{# if(d.beonlineData != null && (d.beonlineData.indexOf("2")>-1 || d.beonlineData.indexOf("3")>-1)) {}}
+			<span class="layui-badge layui-bg-orange">配置文件</span>
+		{{# }}}
+		{{# if(d.beonlineData != null && (d.beonlineData.indexOf("6")>-1)) {}}
+			<span class="layui-badge layui-bg-orange">后管配置文件</span>
+		{{# }}}
+		{{# if(d.beonlineData != null && d.beonlineData.indexOf("5")>-1) {}}
+			<span class="layui-badge layui-bg-orange">压缩JS</span>
+		{{# }}}
+		{{# if(d.beonlineData != null && d.beonlineData.indexOf("0")>-1) {}}
+			<span class="layui-badge layui-bg-orange">静态图片</span>
+		{{# }}}
+		{{# if(d.beonlineData != null && d.beonlineData.indexOf("4")>-1) {}}
+			<span class="layui-badge layui-bg-orange">PDF文件</span>
+		{{# }}}
+      </script>
+      <script type="text/html" id="table-useradmin-webuser">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+<script>
+layui.use('branch', layui.factory('branch')).use(['admin', 'useradmin', 'table'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,view = layui.view
+  ,table = layui.table
+  ,form = layui.form
+  ,setter = layui.setter;
+  var successCode = setter.response.statusCode.ok;
+  form.render(null, 'layadmin-userfront-formlist');
+  //监听搜索
+  form.on('submit(LAY-user-front-search)', function(data){
+    var field = data.field;
+    //执行重载
+    table.reload('LAY-svn-manage', {
+      where: field
+    });
+  });
+  
+  form.on('select(select-beonline-type)', function(data){
+		$("#submit-button").trigger('click');	    
+   });
+
+  //事件
+  var active = {
+    add: function(){
+      admin.popup({
+        title: '添加分支'
+        ,area: ['500px', '600px']
+        ,id: 'LAY-popup-svn-add'
+        ,success: function(layero, index){
+          view(this.id).render('branch/branchform',{envMark:'0'}).done(function(){
+            form.render(null, 'layuiadmin-form-svnadmin');
+            
+            //监听提交
+            form.on('submit(LAY-svn-front-submit)', function(data){
+              var field = data.field; //获取提交的字段
+              var editionInfoi = field.editionInfo;
+              var editionInfo = field.editionInfo+"|";
+              for(var item in field){
+            	  if(item.indexOf("fushuInfo") > -1){
+            		  editionInfo += field[item] + "|"
+            		  delete field[item]
+            	  }
+              }
+              editionInfo = editionInfo.substr(0,editionInfo.length-1);
+              field.editionInfo = editionInfo;
+              
+              var beonlineDate = field.beonlineDate;
+              var beonlineDates = beonlineDate.split("|");
+              field.beonlineDate = beonlineDates[0];
+              field.beonlineId = beonlineDates[1];
+              
+              var beonlieData = "";
+              for(var item in field){
+            	  if(item.indexOf("beonlineData") > -1){
+            		  beonlieData += field[item] + "|"
+            		  delete field[item]
+            	  }
+              }
+              if(field.houguandata == null){
+            	  beonlieData = beonlieData.substr(0,beonlieData.length-1);
+              }else{
+            	  beonlieData += field.houguandata;
+            	  delete field.houguandata;
+              }
+              field.beonlineData = beonlieData;
+              
+              var proBranchId = "";
+              if("0" === editionInfoi){
+            	  proBranchId = field.proBranchId;
+              }else if("1" === editionInfoi){
+            	  proBranchId = field.proBranchId2;
+              }else if("3" === editionInfoi){
+            	  proBranchId = field.proBranchId3;
+              }
+              delete field.proBranchId;
+              delete field.proBranchId2;
+              delete field.proBranchId3;
+			  field.proBranchId = proBranchId;              
+              //提交 Ajax 成功后，关闭当前弹层并重载表格
+              admin.req({
+	            url: '/branch/insert.do'
+	            ,data: JSON.stringify(field)
+	            ,success: function(res){
+		      		if(res.code == successCode){
+		                layui.table.reload('LAY-svn-manage'); //重载表格
+		                layer.close(index); //执行关闭 
+		      		}else{
+		      			layer.close(index);
+		      		}
+	            }
+	          });
+            });
+          });
+        }
+      });
+    }
+  };
+  
+  $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>
